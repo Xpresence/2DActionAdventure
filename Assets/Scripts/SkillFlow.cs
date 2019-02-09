@@ -5,9 +5,9 @@ using UnityEngine;
 public class SkillFlow : MonoBehaviour {
 
     public float flowForce = 3f;
-   // public bool grounded = false;
+    //public bool grounded = false;
     public bool flow = false;
-   // public Transform groundCheck;
+    //public Transform groundCheck;
     CharacterController CC;
 
     // Use this for initialization

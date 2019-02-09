@@ -13,14 +13,19 @@ public class CharacterController : MonoBehaviour {
     public float maxSpeed = 5f;
     public float move;
 
+    // Skills
+    private Skills Skills;
+
+    // Cooldown
+    private Cooldown Cooldown;
 
     // Jump
-    public float jumpForce = 500f;
-    public bool jump = false;
+    //public float jumpForce = 500f;
+    //public bool jump = false;
 
     // Dash
-    public float dashSpeed = 50f;
-    bool dash = false;
+    //public float dashSpeed = 50f;
+    //bool dash = false;
 
 
 
@@ -30,30 +35,35 @@ public class CharacterController : MonoBehaviour {
 
     private Rigidbody2D rb;
 
-    Vector3 targetVelocity;
+    private Vector3 targetVelocity;
 
     //float timer = 0.0f;
 
     // Use this for initialization
+    void Awake ()
+    {
+        Skills = new Skills();
+        Cooldown = new Cooldown();
+    }
+
     void Start ()
     {
-        //Dash = GetComponent<SkillDash>();
         rb = GetComponent<Rigidbody2D>();
+
     }
 
     void Update ()
     {
         grounded = Physics2D.Linecast(transform.position, groundCheck.position, 1<<LayerMask.NameToLayer("Ground"));
 
-        //if ((Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) && grounded)
         if (Input.GetButtonDown("Jump") && grounded)
         {
-            jump = true;
+            Skills.Jump.IsPressed = Skills.Jump.CanRunSkill();
         }
 
         if (Input.GetButtonDown("Dash"))
         {
-            dash = true;
+            Skills.Dash.IsPressed = Skills.Dash.CanRunSkill();
         }
 
         move = Input.GetAxis("Horizontal");
@@ -67,6 +77,7 @@ public class CharacterController : MonoBehaviour {
         /*timer += Time.deltaTime;
         int seconds = Convert.ToInt32(timer % 60);
         Debug.Log(Time.time);*/
+
         if (move > 0 && !facingRight)
         {
             Flip();
@@ -77,34 +88,26 @@ public class CharacterController : MonoBehaviour {
         }
 
 
-        if (jump)
+        if (Skills.Jump.IsPressed)
         {
-            GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, jumpForce));
-            jump = false;
+
+            GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, Skills.Jump.Parameter));
+            Skills.Jump.IsPressed = false;
+            
         }
 
-        if (dash)
+        if (Skills.Dash.IsPressed)
         {
-            targetVelocity = facingRight ? new Vector2(dashSpeed, 0f) : new Vector2(-dashSpeed, 0f);
-            /*if (facingRight)
-            {
-                targetVelocity = new Vector2(dashSpeed, 0f);
-            }
-            else
-            {
-                targetVelocity = new Vector2(-dashSpeed, 0f);
-            }*/
 
-            dash = false;
+            targetVelocity = facingRight ? new Vector2(Skills.Dash.Parameter, 0f) : new Vector2(-Skills.Dash.Parameter, 0f);
+            Skills.Dash.IsPressed = false;
 
+            StartCoroutine(Cooldown.CoroutineCooldown(5f, (x) => { Skills.Dash.IsCooldown = x; }));
         }
         else
         {
             targetVelocity = new Vector2(move * maxSpeed, rb.velocity.y);
         }
-
-
-        //GetComponent<Rigidbody2D>().velocity = new Vector2(move * maxSpeed, GetComponent<Rigidbody2D>().velocity.y);
 
 
         rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
@@ -133,4 +136,6 @@ public class CharacterController : MonoBehaviour {
         theScale.x *= -1;
         transform.localScale = theScale;
     }
+
+
 }
