@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+//using Player;
+
+
 public class CharacterController : MonoBehaviour {
 
     public bool grounded = false;
@@ -14,7 +17,7 @@ public class CharacterController : MonoBehaviour {
     public float move;
 
     // Skills
-    private Skills Skills;
+    private Player.Skills Skills;
 
     // Cooldown
     private Cooldown Cooldown;
@@ -42,7 +45,7 @@ public class CharacterController : MonoBehaviour {
     // Use this for initialization
     void Awake ()
     {
-        Skills = new Skills();
+        Skills = new Player.Skills();
         Cooldown = new Cooldown();
     }
 
