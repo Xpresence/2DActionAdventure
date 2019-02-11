@@ -22,16 +22,6 @@ public class CharacterController : MonoBehaviour {
     // Cooldown
     private Cooldown Cooldown;
 
-    // Jump
-    //public float jumpForce = 500f;
-    //public bool jump = false;
-
-    // Dash
-    //public float dashSpeed = 50f;
-    //bool dash = false;
-
-
-
 
     private Vector3 m_Velocity = Vector3.zero;
     private float m_MovementSmoothing = .05f;
@@ -39,8 +29,6 @@ public class CharacterController : MonoBehaviour {
     private Rigidbody2D rb;
 
     private Vector3 targetVelocity;
-
-    //float timer = 0.0f;
 
     // Use this for initialization
     void Awake ()
@@ -77,9 +65,6 @@ public class CharacterController : MonoBehaviour {
     // Update is called once per frame
     void FixedUpdate ()
     {
-        /*timer += Time.deltaTime;
-        int seconds = Convert.ToInt32(timer % 60);
-        Debug.Log(Time.time);*/
 
         if (move > 0 && !facingRight)
         {
