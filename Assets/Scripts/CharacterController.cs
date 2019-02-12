@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.SceneManagement;
 
 //using Player;
-
+//using Cooldown;
 
 public class CharacterController : MonoBehaviour {
 
@@ -20,13 +21,14 @@ public class CharacterController : MonoBehaviour {
     private Player.Skills Skills;
 
     // Cooldown
-    private Cooldown Cooldown;
+    private Cooldown.Cooldown Cooldown;
 
-
-    private Vector3 m_Velocity = Vector3.zero;
-    private float m_MovementSmoothing = .05f;
 
     private Rigidbody2D rb;
+
+
+    private Vector3 zeroVelocity = Vector3.zero;
+    private float movementSmoothing = 0.05f;
 
     private Vector3 targetVelocity;
 
@@ -34,15 +36,15 @@ public class CharacterController : MonoBehaviour {
     void Awake ()
     {
         Skills = new Player.Skills();
-        Cooldown = new Cooldown();
+        Cooldown = new Cooldown.Cooldown();
     }
 
     void Start ()
     {
         rb = GetComponent<Rigidbody2D>();
-
     }
 
+    // Update is called once per frame
     void Update ()
     {
         grounded = Physics2D.Linecast(transform.position, groundCheck.position, 1<<LayerMask.NameToLayer("Ground"));
@@ -58,21 +60,19 @@ public class CharacterController : MonoBehaviour {
         }
 
         move = Input.GetAxis("Horizontal");
-
-        
+  
     }
-
-    // Update is called once per frame
+ 
     void FixedUpdate ()
     {
 
         if (move > 0 && !facingRight)
         {
-            Flip();
+            FlipSprite();
         }
         else if (move < 0 && facingRight)
         {
-            Flip();
+            FlipSprite();
         }
 
 
@@ -90,7 +90,7 @@ public class CharacterController : MonoBehaviour {
             targetVelocity = facingRight ? new Vector2(Skills.Dash.Parameter, 0f) : new Vector2(-Skills.Dash.Parameter, 0f);
             Skills.Dash.IsPressed = false;
 
-            StartCoroutine(Cooldown.CoroutineCooldown(5f, (x) => { Skills.Dash.IsCooldown = x; }));
+            StartCoroutine(Cooldown.CoroutineCooldown(Skills.Dash.Cooldown, (x) => { Skills.Dash.IsCooldown = x; }));
         }
         else
         {
@@ -98,8 +98,7 @@ public class CharacterController : MonoBehaviour {
         }
 
 
-        rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
-
+        rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref zeroVelocity, movementSmoothing);
 
 
 
@@ -111,13 +110,22 @@ public class CharacterController : MonoBehaviour {
         }
 
         if (Input.GetKey(KeyCode.R))
-        {  
-            Application.LoadLevel(Application.loadedLevel);
+        {
+            //Application.LoadLevel(Application.loadedLevel);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 
+    /*
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag == "Ground")
+        {
+            grounded = true;
+        }
+    }*/
 
-    void Flip()
+    void FlipSprite()
     {
         facingRight = !facingRight;
         Vector3 theScale = transform.localScale;

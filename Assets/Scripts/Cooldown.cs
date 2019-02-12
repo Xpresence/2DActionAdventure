@@ -5,16 +5,19 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-class Cooldown
+namespace Cooldown
 {
-    public IEnumerator CoroutineCooldown(float seconds, Action<bool> isCooldown)
+    class Cooldown
     {
-        isCooldown(true);
+        public IEnumerator CoroutineCooldown(float seconds, Action<bool> isCooldown)
+        {
+            isCooldown(true);
 
-        yield return new WaitForSeconds(seconds);
+            yield return new WaitForSeconds(seconds);
 
-        isCooldown(false);
+            isCooldown(false);
+        }
+
     }
-
 }
 
