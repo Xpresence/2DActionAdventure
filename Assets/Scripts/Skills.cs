@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Player
+namespace PlayerNamespace
 {
     class Skills
     {
         private Skill jump;
         private Skill dash;
         private Skill flow;
+        private Skill grab;
 
         public Skills()
         {
@@ -38,6 +39,13 @@ namespace Player
                 IsPressed = false,
                 Cooldown = 5f,
                 Parameter = 700f
+            };
+
+            Grab = new Skill()
+            {
+                IsLearned = true,
+                IsCooldown = false,
+                IsPressed = false
             };
 
         }
@@ -78,6 +86,19 @@ namespace Player
             set
             {
                 flow = value;
+            }
+        }
+
+        public Skill Grab
+        {
+            get
+            {
+                return grab;
+            }
+
+            set
+            {
+                grab = value;
             }
         }
     }

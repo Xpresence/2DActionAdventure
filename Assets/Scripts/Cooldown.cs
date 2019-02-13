@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace Cooldown
+namespace CooldownNamespace
 {
     class Cooldown
     {

@@ -4,8 +4,8 @@ using UnityEngine;
 using System;
 using UnityEngine.SceneManagement;
 
-//using Player;
-//using Cooldown;
+using PlayerNamespace;
+using CooldownNamespace;
 
 public class CharacterController : MonoBehaviour {
 
@@ -18,10 +18,10 @@ public class CharacterController : MonoBehaviour {
     public float move;
 
     // Skills
-    private Player.Skills Skills;
+    private Skills Skills;
 
     // Cooldown
-    private Cooldown.Cooldown Cooldown;
+    private Cooldown Cooldown;
 
 
     private Rigidbody2D rb;
@@ -35,8 +35,8 @@ public class CharacterController : MonoBehaviour {
     // Use this for initialization
     void Awake ()
     {
-        Skills = new Player.Skills();
-        Cooldown = new Cooldown.Cooldown();
+        Skills = new Skills();
+        Cooldown = new Cooldown();
     }
 
     void Start ()
@@ -58,6 +58,11 @@ public class CharacterController : MonoBehaviour {
         {
             Skills.Dash.IsPressed = Skills.Dash.CanRunSkill();
         }
+
+        /*if (Input.GetButtonDown("Grab"))
+        {
+            Skills.Grab.IsPressed = true;
+        }*/
 
         move = Input.GetAxis("Horizontal");
   
