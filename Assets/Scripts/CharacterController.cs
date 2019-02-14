@@ -18,7 +18,7 @@ public class CharacterController : MonoBehaviour {
     public float move;
 
     // Skills
-    private Skills Skills;
+    public Skills Skills;
 
     // Cooldown
     private Cooldown Cooldown;
@@ -59,7 +59,7 @@ public class CharacterController : MonoBehaviour {
             Skills.Dash.IsPressed = Skills.Dash.CanRunSkill();
         }
 
-        /*if (Input.GetButtonDown("Grab"))
+        /*if (Input.GetButtonDown("Grab") && grounded)
         {
             Skills.Grab.IsPressed = true;
         }*/

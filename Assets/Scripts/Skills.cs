@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PlayerNamespace
 {
-    class Skills
+    public class Skills
     {
         private Skill jump;
         private Skill dash;
