@@ -2,15 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SkillGrab : MonoBehaviour {
+public class MoveObjectWithGrab : MonoBehaviour {
 
+    private GameObject player;
     private CharacterController CC;
+
     private Rigidbody2D rb;
 
     // Use this for initialization
+    void Awake()
+    {
+        player = GameObject.FindGameObjectWithTag("Player");
+        CC = player.GetComponent<CharacterController>();
+    }
+
     void Start()
     {
-        CC = GetComponent<CharacterController>();
         rb = GetComponent<Rigidbody2D>();
     }
 
@@ -31,16 +38,17 @@ public class SkillGrab : MonoBehaviour {
 
     void FixedUpdate()
     {
-        if (CC.Skills.Grab.IsPressed)
-        {
-            // перетаскиваем объект за игроком
-
-        }
 
     }
 
-    void OnTriggerEnter(Collider2D collider)
+    void OnTriggerStay2D(Collider2D collider)
     {
+        //Debug.Log(CC.Skills.Grab.IsPressed);
         // проверяем способность перетаскивания
+        // перетаскиваем объект за игроком
+        if (CC.Skills.Grab.IsPressed)
+        {
+            //collider.attachedRigidbody.AddForce(collider.attachedRigidbody.velocity);
+        }
     }
 }

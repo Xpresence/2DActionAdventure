@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PlayerNamespace
 {
-    class Skill
+    public class Skill
     {
         private bool isLearned;
         private bool isCooldown;
