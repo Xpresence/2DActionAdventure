@@ -4,11 +4,7 @@ using UnityEngine;
 
 public class SkillFlow : MonoBehaviour {
 
-    public float flowForce = 3f;
-    //public bool grounded = false;
-    public bool flow = false;
-    //public Transform groundCheck;
-    CharacterController CC;
+    private CharacterController CC;
 
     // Use this for initialization
     void Start()
@@ -18,12 +14,9 @@ public class SkillFlow : MonoBehaviour {
 
     void Update()
     {
-        //grounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"));
-
-        //if ((Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) && grounded)
         if (Input.GetButtonDown("Flow") && CC.grounded)
         {
-            flow = true;
+            CC.Skills.Flow.IsPressed = CC.Skills.Flow.CanRunSkill();
         }
 
     }
@@ -31,21 +24,24 @@ public class SkillFlow : MonoBehaviour {
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (flow && CC.facingRight)
+        if (CC.Skills.Flow.IsPressed && CC.facingRight)
         {
-            transform.position += new Vector3(flowForce, 0f, 0f);
-            //GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, flowForce));
-            //transform.position.x  += flowForce;
-            flow = false;
+            transform.position += new Vector3(CC.Skills.Flow.Parameter, 0f, 0f);
+
+            CC.Skills.Flow.IsPressed = false;
         }
-        else if (flow && !CC.facingRight)
+        else if (CC.Skills.Flow.IsPressed && !CC.facingRight)
         {
-            transform.position -= new Vector3(flowForce, 0f, 0f);
-            //GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, flowForce));
-            //transform.position.x  += flowForce;
-            flow = false;
+            transform.position -= new Vector3(CC.Skills.Flow.Parameter, 0f, 0f);
+
+            CC.Skills.Flow.IsPressed = false;
         }
 
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        
     }
 
 }
